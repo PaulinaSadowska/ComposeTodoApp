@@ -2,8 +2,6 @@ package com.paulinasadowska.composetodoapp.todo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,14 +10,12 @@ import com.paulinasadowska.composetodoapp.ui.ComposeTodoAppTheme
 
 @Composable
 fun TodoItemInput(
-        onItemComplete: (TodoItem) -> Unit
+        text: String = "",
+        setText: (String) -> Unit = {},
+        submit: () -> Unit = {},
+        icon: TodoIcon = TodoIcon.Default,
+        setIcon: (TodoIcon) -> Unit = {}
 ) {
-    val (text, setText) = remember { mutableStateOf("") }
-    val (icon, setIcon) = remember { mutableStateOf(TodoIcon.Default) }
-    val submit = {
-        onItemComplete(TodoItem(text, icon = icon))
-        setText("")
-    }
     Column {
         Row(modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -46,14 +42,12 @@ fun TodoItemInput(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun TodoItemInputPreview() {
     ComposeTodoAppTheme {
-        TodoItemInput(onItemComplete = {})
+        TodoItemInput(text = "test")
     }
-
 }
