@@ -28,6 +28,9 @@ fun TodoScreen(
         onRemoveItem: (TodoItem) -> Unit
 ) {
     Column {
+        TodoItemInputBackground(elevate = true, modifier = Modifier.fillMaxWidth()) {
+            TodoItemInput(onItemComplete = { onAddItem(it) })
+        }
         LazyColumn(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(top = 8.dp)
