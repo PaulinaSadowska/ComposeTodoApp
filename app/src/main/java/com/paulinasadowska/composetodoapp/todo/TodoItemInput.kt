@@ -1,8 +1,6 @@
 package com.paulinasadowska.composetodoapp.todo
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,6 +15,11 @@ fun TodoItemInput(
         onItemComplete: (TodoItem) -> Unit
 ) {
     val (text, setText) = remember { mutableStateOf("") }
+    val (icon, setIcon) = remember { mutableStateOf(TodoIcon.Default) }
+    val submit = {
+        onItemComplete(TodoItem(text, icon = icon))
+        setText("")
+    }
     Column {
         Row(modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -27,18 +30,20 @@ fun TodoItemInput(
                             .weight(1f)
                             .padding(end = 8.dp),
                     text = text,
-                    onTextChange = setText
-
+                    onTextChange = setText,
+                    onImeAction = submit
             )
             TodoEditButton(
-                    onClick = {
-                        onItemComplete(TodoItem(text))
-                        setText("")
-                    },
+                    onClick = submit,
                     enabled = text.isNotBlank(),
                     text = "Add",
                     modifier = Modifier.align(Alignment.CenterVertically),
             )
+        }
+        if (text.isNotBlank()) {
+            AnimatedIconRow(icon, setIcon, Modifier.padding(top = 8.dp))
+        } else {
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 

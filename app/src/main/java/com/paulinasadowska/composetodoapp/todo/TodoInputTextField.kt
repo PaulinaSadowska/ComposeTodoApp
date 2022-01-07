@@ -9,8 +9,9 @@ fun TodoInputTextField(
         modifier: Modifier = Modifier,
         text: String = "",
         onTextChange: (String) -> Unit = {},
+        onImeAction: () -> Unit = {}
 ) {
-    TodoInputText(text, onTextChange, modifier)
+    TodoInputText(text, onTextChange, modifier, onImeAction)
 }
 
 @Preview(showBackground = true)
