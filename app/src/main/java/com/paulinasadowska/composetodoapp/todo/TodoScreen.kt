@@ -44,7 +44,6 @@ fun TodoScreen(
             }
         }
 
-        // For quick testing, a random item generator button
         Button(
                 onClick = { onAddItem(generateRandomTodoItem()) },
                 modifier = Modifier
