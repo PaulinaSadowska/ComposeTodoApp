@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paulinasadowska.composetodoapp.util.generateRandomTodoItem
@@ -32,8 +35,23 @@ fun TodoScreen(
         onEditDone: () -> Unit
 ) {
     Column {
-        TodoItemInputBackground(elevate = true, modifier = Modifier.fillMaxWidth()) {
-            TodoItemEntryInput(onItemComplete = { onAddItem(it) })
+        val enableTopSelection = currentlyEditing == null
+        TodoItemInputBackground(
+                elevate = enableTopSelection,
+                modifier = Modifier.fillMaxWidth()
+        ) {
+            if (enableTopSelection) {
+                TodoItemEntryInput(onItemComplete = { onAddItem(it) })
+            } else {
+                Text("Editing Item",
+                        style = MaterialTheme.typography.h6,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(16.dp)
+                                .fillMaxWidth()
+                )
+            }
         }
         LazyColumn(
                 modifier = Modifier.weight(1f),

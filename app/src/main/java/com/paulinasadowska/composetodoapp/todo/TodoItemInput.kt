@@ -14,7 +14,8 @@ fun TodoItemInput(
         setText: (String) -> Unit = {},
         submit: () -> Unit = {},
         icon: TodoIcon = TodoIcon.Default,
-        setIcon: (TodoIcon) -> Unit = {}
+        setIcon: (TodoIcon) -> Unit = {},
+        buttonSlot: @Composable () -> Unit
 ) {
     Column {
         Row(modifier = Modifier
@@ -29,12 +30,10 @@ fun TodoItemInput(
                     onTextChange = setText,
                     onImeAction = submit
             )
-            TodoEditButton(
-                    onClick = submit,
-                    enabled = text.isNotBlank(),
-                    text = "Add",
-                    modifier = Modifier.align(Alignment.CenterVertically),
-            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Box(Modifier.align(Alignment.CenterVertically)) {
+                buttonSlot()
+            }
         }
         if (text.isNotBlank()) {
             AnimatedIconRow(icon, setIcon, Modifier.padding(top = 8.dp))
@@ -48,6 +47,15 @@ fun TodoItemInput(
 @Composable
 fun TodoItemInputPreview() {
     ComposeTodoAppTheme {
-        TodoItemInput(text = "test")
+        TodoItemInput(
+                text = "test",
+                buttonSlot = {
+                    TodoEditButton(
+                            onClick = { },
+                            enabled = true,
+                            text = "Add"
+                    )
+                }
+        )
     }
 }
