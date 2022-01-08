@@ -24,8 +24,12 @@ import com.paulinasadowska.composetodoapp.util.generateRandomTodoItem
 @Composable
 fun TodoScreen(
         items: List<TodoItem>,
+        currentlyEditing: TodoItem?,
         onAddItem: (TodoItem) -> Unit,
-        onRemoveItem: (TodoItem) -> Unit
+        onRemoveItem: (TodoItem) -> Unit,
+        onStartEdit: (TodoItem) -> Unit,
+        onEditItemChange: (TodoItem) -> Unit,
+        onEditDone: () -> Unit
 ) {
     Column {
         TodoItemInputBackground(elevate = true, modifier = Modifier.fillMaxWidth()) {
@@ -35,12 +39,21 @@ fun TodoScreen(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(top = 8.dp)
         ) {
-            items(items = items) {
-                TodoRow(
-                        todo = it,
-                        onItemClicked = { item -> onRemoveItem(item) },
-                        modifier = Modifier.fillParentMaxWidth()
-                )
+            items(items = items) { todo ->
+                if (currentlyEditing?.id == todo.id) {
+                    TodoItemInlineEditor(
+                            item = todo,
+                            onEditItemChange = onEditItemChange,
+                            onEditDone = onEditDone,
+                            onRemoveItem = { onRemoveItem(todo) }
+                    )
+                } else {
+                    TodoRow(
+                            todo = todo,
+                            onItemClicked = { item -> onStartEdit(item) },
+                            modifier = Modifier.fillParentMaxWidth()
+                    )
+                }
             }
         }
 
@@ -64,5 +77,5 @@ fun PreviewTodoScreen() {
             TodoItem("Apply state", TodoIcon.Done),
             TodoItem("Build dynamic UIs", TodoIcon.Square)
     )
-    TodoScreen(items, {}, {})
+    TodoScreen(items, currentlyEditing = items[2], {}, {}, {}, {}, {})
 }
