@@ -57,7 +57,7 @@ fun TodoScreen(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(top = 8.dp)
         ) {
-            items(items = items) { todo ->
+            items(items = items, key = { it.id }) { todo ->
                 if (currentlyEditing?.id == todo.id) {
                     TodoItemInlineEditor(
                             item = todo,
@@ -69,7 +69,8 @@ fun TodoScreen(
                     TodoRow(
                             todo = todo,
                             onItemClicked = { item -> onStartEdit(item) },
-                            modifier = Modifier.fillParentMaxWidth()
+                            modifier = Modifier.fillParentMaxWidth(),
+                            onItemRemoved = { onRemoveItem(todo) }
                     )
                 }
             }
